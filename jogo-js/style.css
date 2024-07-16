@@ -1,0 +1,52 @@
+#background {
+     position: absolute;
+     top: 5vw;
+     left:5vw;
+     width: 90vw;
+     height: 40vw;
+     background-color: black;
+     text-align: center;
+     color:aliceblue
+	}
+
+#div2 {
+    position: absolute; 
+    top: 1vw; 
+    left: 5vw; 
+    width: 5vw; 
+    height: 5vw; 
+    background-color: green; 
+ 
+    
+}
+#div1 {
+    position: absolute;
+    top: 15vw;
+    left: 15vw; 
+    width: 5vw; 
+    height: 5vw; 
+    background-color: green; 
+    
+}
+.painel {
+    position: absolute;
+     top: 46vw; 
+     left:10vw; 
+     text-align: center;
+
+}  
+
+/* classe que movimenta a div2 , ela é adicionada e retirada pelo JS*/
+.mover{
+    animation-name: mover_animation;  
+    animation-duration: 4s;       
+    animation-iteration-count: infinite;  
+    animation-timing-function:ease-in-out; 
+}
+@keyframes mover_animation {
+    0%   {left:1vw;} 
+     
+    50% {left:85vw;}
+    
+    100%   {left:1vw;}  
+  }
