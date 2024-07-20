@@ -3,7 +3,7 @@ const start = document.querySelector('.start');
 const gameOver = document.querySelector('.gameOver');
 const pontos = document.querySelector('.pontos');
 const gameBase = document.querySelector('.gameBase');
-const background = document.querySelector('.background');
+const gameBoard = document.querySelector('.gameBoard');
 const victims = ['bird',  'mice', 'rabbit', 'butterfly', 'dog'];
 const pointAudio = document.querySelectorAll('audio')[0];
 const dieAudio = document.querySelectorAll('audio')[1];
@@ -45,10 +45,14 @@ function handleGame () {
       }
     }, 10)
   }
-  
-function createVictim() {
-    let bird = document.createElement('img');
-    bird.src = "./assets"
+  function createVictim() {
+    victims.forEach(victim => {
+        let victimElement = document.createElement('div')
+        victimElement.classList.add(victim);
+        const imgSrc = `assets/img/${victim}.png`;
+        victimElement.style.backgroundImage = `url(${imgSrc})`;
+        gameBase.appendChild(victimElement);
+    });
     
   }
 
@@ -62,7 +66,7 @@ function jump() {
       novaPosicao = board.height - catSetting.height / 2
     }
     // Atualiza a posição do personagem
-    cat.style.bottom = novaPosicao + 'vw'
+    cat.style.bottom = novaPosicao + '%'
   
     // Atualiza a posição atual
     posicaoAtual = novaPosicao
@@ -77,7 +81,7 @@ function downMovement() {
       // Atualiza a posição atual
       posicaoAtual = novaPosicao;
       // Atualiza a posição do personagem
-      cat.style.bottom = novaPosicao + "vw";
+      cat.style.bottom = novaPosicao + "%";
     }, 50)
   }
 function checkCollision() {
@@ -86,3 +90,20 @@ function checkCollision() {
   }
   
   setInterval(checkCollision, 10);
+
+
+  function endGame() {
+    clearInterval(downTimer)
+    clearInterval(backgroundTimer);
+    start.removeEventListener('click', startGame)
+    toggleGameBase()
+    clearInterval(timer)
+    gameBoard.removeEventListener('click', jump)
+    gameOver.style.display = "block"
+    setTimeout(() => {
+      start.addEventListener('click', startGame);
+      gameOver.style.display = "none"
+      start.style.display = 'block'
+    }, 3000)
+  
+  }
