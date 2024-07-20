@@ -1,52 +1,124 @@
-#background {
-     position: absolute;
-     top: 5vw;
-     left:5vw;
-     width: 90vw;
-     height: 40vw;
-     background-color: black;
-     text-align: center;
-     color:aliceblue
-	}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-#div2 {
-    position: absolute; 
-    top: 1vw; 
-    left: 5vw; 
-    width: 5vw; 
-    height: 5vw; 
-    background-color: green; 
- 
-    
+audio {
+    display: none;
 }
-#div1 {
+
+.background {
     position: absolute;
-    top: 15vw;
-    left: 15vw; 
-    width: 5vw; 
-    height: 5vw; 
-    background-color: green; 
-    
+    top: 1vw;
+    left: 1vw;
+    width: 640px;
+    height: 360px;
+    background-image: url(./assets/img/background.png);
+    background-color: black;
+    border: 2px solid black;
+    margin: 0 auto;
+    overflow: hidden;
 }
+
+.cat {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    top: 59%;
+    left: 2%;
+    bottom: 50%;
+    transition: bottom 0.5s linear;
+
+}
+
+.gameBase {
+    position: absolute;
+    bottom: -160px;
+    width: 660px;
+    z-index: 2;
+}
+
+.bird {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    top: 9%;
+    right: 2%;
+    bottom: 50%;
+    transition: bottom 0.5s linear;
+}
+.dog {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    top: 59%;
+    right: 2%;
+    bottom: 50%;
+    transition: bottom 0.5s linear;
+}
+.rabbit {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    top: 9%;
+    left: 2%;
+    bottom: 50%;
+    transition: bottom 0.5s linear;
+}
+.mice {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    top: 59%;
+    left: 2%;
+    bottom: 50%;
+    transition: bottom 0.5s linear;
+}
+.butterfly {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    top: 19%;
+    right: 2%;
+    bottom: 50%;
+    transition: bottom 0.5s linear;
+}
+
+.baseMove {
+    animation: moveBase 2s linear infinite;
+}
+
 .painel {
     position: absolute;
-     top: 46vw; 
-     left:10vw; 
-     text-align: center;
+    top: 46vw;
+    left: 10vw;
+    text-align: center;
 
-}  
+}
 
 /* classe que movimenta a div2 , ela é adicionada e retirada pelo JS*/
-.mover{
-    animation-name: mover_animation;  
-    animation-duration: 4s;       
-    animation-iteration-count: infinite;  
-    animation-timing-function:ease-in-out; 
+.mover {
+    animation-name: mover_animation;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
 }
+
 @keyframes mover_animation {
-    0%   {left:1vw;} 
-     
-    50% {left:85vw;}
-    
-    100%   {left:1vw;}  
-  }
+    0% {
+        left: 1vw;
+    }
+
+    50% {
+        left: 85vw;
+    }
+
+    100% {
+        left: 1vw;
+    }
+}
+
+@media screen and (max-width: 640px) {
+
+}

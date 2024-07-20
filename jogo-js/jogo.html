@@ -3,172 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Missy Caçadora</title>
     <link rel="stylesheet" href="style.css">
+	
     </head>
 	<body>
+		<audio src="./assets/audio/die.wav"></audio>
+		<audio src="./assets/audio/point.wav"></audio>
+		
 		<div class="background" id="background">
-			<img src="./assets/img/background.png">
-			<div id="div2" >
-				<img src="./assets/img/cat.png">
-			</div>
-			<div id="div1">
-				D1
-			</div>
+			<div class="missy" id="missy"></div>
+			<div class="alvo" id="alvo"></div>
+			<h1 class="pontos">0</h1>
+			<img src="./assets/img/cat.png" class="cat" alt="gameBase">	
+			<div class="cat"></div>
 		</div>	
 
 		<div class="painel">
+
 			<button type="button"  id="iniciar" >Iniciar</button><br>
-			<hr>
-			<button type="button"  id="acima" >Acima</button><br>
-			<button type="button"  id="esquerda">Esquerda</button>
-			<button type="button"  id="direita" >Direita</button><br>
-			<button type="button"  id="baixo" >Abaixo</button>
-			<hr>
+			
 		</div>
 		
-		<script>
-
-//Ao carregar a página estas linhas são executadas.
-//Variáveis globais 
-let parado = true; //O div1 está parado?
-let cor = 0; // contador para mudança de cor
-let timerDiv1; //controlado pelos botões
-let timerDiv2; // Movimento automático
-let timerColisao; // teste de colisão
-
-//Adiciona o evento click no botão iniciar
-document.querySelector("#iniciar").addEventListener("click", ()=>{iniciar()});
-
-
-//*****  Funções  *******//
-
-function iniciar(){
-	// Posicionamento inicial
-	div1.style.left="15vw";
-	div1.style.top="15vw";	
-	div2.style.left="1vw";
-	div2.style.top="5vw";
-	
-
-	div2.classList.add("mover"); // Movimento automático
-	timerColisao = setInterval("colisao()", 5); // teste de colisão
-
-	//ativa Botões do painel de controle
-	document.querySelector("#acima").addEventListener("click", ()=>{move('acima')});
-	document.querySelector("#esquerda").addEventListener("click",()=>{ move('esquerda')});
-	document.querySelector("#direita").addEventListener("click",()=>{ move('direita')});
-	document.querySelector("#baixo").addEventListener("click",()=>{ move('baixo')});
-	document.querySelector("#acima").addEventListener("click",()=>{ move('acima')});
-
-	//deixa o botão iniciar invisivel
-	document.querySelector("#iniciar").style.visibility="hidden";
-}
-
-
-
-
-
-// Mover div 1  - através dos botões
-function move(Direcao) {
-	if (!parado) {
-		clearInterval(timerDiv1);
-	}
-	if (Direcao == "direita") {
-		timerDiv1 = setInterval("direita()",15);
-		parado = false;
-	}
-
-	if (Direcao == "esquerda") {
-		timerDiv1 = setInterval("esquerda()",15);
-		parado = false;;
-	}
-
-	if (Direcao == "acima") {
-		timerDiv1 = setInterval("acima()",15);
-		parado = false;;
-	}
-
-	if (Direcao == "baixo") {
-		timerDiv1 = setInterval("baixo()",15);
-		parado = false;;
-	}
-}
-
-
-function direita() {
-	let div1Left= parseInt(getComputedStyle(div1).left);
-	let backgroundWidth= parseInt(getComputedStyle(background).width);
-	let div1Width= parseInt(getComputedStyle(div1).width);
-
-	div1.style.left = div1Left+5;
-	if ( div1Left >= backgroundWidth  - div1Width){
-		clearInterval(timerDiv1);
-		timerDiv1 = setInterval ("esquerda()",15);
-	}
-}
-
-function esquerda() {
-	let div1Left= parseInt(getComputedStyle(div1).left);
-	
-	div1.style.left = div1Left-5;
-	if ( div1Left <= 0){
-		clearInterval(timerDiv1);
-		timerDiv1 = setInterval ("direita()",15);
-	}
-}
-
-function baixo() {
-	let div1Top= parseInt(getComputedStyle(div1).top);
-	let backgroundHeight= parseInt(getComputedStyle(background).height);
-	let div1Height= parseInt(getComputedStyle(div1).height);
-
-	div1.style.top = div1Top+5;
-	if(div1Top >= backgroundHeight - div1Height){
-		clearInterval(timerDiv1);
-		timerDiv1 = setInterval("acima()",15);
-	}
-}
-function acima() {
-	let div1Top= parseInt(getComputedStyle(div1).top);
-
-	div1.style.top = div1Top-5;
-	if(div1Top <= 0 ){
-	clearInterval(timerDiv1);
-	timerDiv1 = setInterval("baixo()",15);
-	}
-}
-
-//Testa se ha colisão entre a div1 e a div2
-function colisao(){
-
-	//pega os dados da div1
-	let div1Left= parseInt(getComputedStyle(div1).left);
-	let div1Top= parseInt(getComputedStyle(div1).top);
-	let div1Height= parseInt(getComputedStyle(div1).height);
-	let div1Width= parseInt(getComputedStyle(div1).width);
-
-	//pega os dados da div2
-	let div2Left= parseInt(getComputedStyle(div2).left);
-	let div2Top= parseInt(getComputedStyle(div2).top);
-	let div2Height= parseInt(getComputedStyle(div2).height);
-	let div2Width= parseInt(getComputedStyle(div2).width);
-
-
-	//se div1 e div2 colidirem... parar as divs e o teste de colisão
-	if (((div1Left + div1Width >= div2Left)&&(div1Left <= div2Left + div2Width))&&
-		((div1Top + div2Height>= div2Top)&&(div1Top <= div2Top + div2Height))){
-			clearInterval(timerDiv1);
-			div2.classList.remove("mover");
-			clearInterval(timerColisao);
-			document.querySelector("#iniciar").style.visibility="visible";
-	}
-
-}
-	
-		
-            
-
+		<script src="index.js">
 		</script>
 	</body>
 </html>
