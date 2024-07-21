@@ -3,7 +3,7 @@ const start = document.querySelector('.start');
 const gameOver = document.querySelector('.gameOver');
 const pontos = document.querySelector('.pontos');
 const gameBase = document.querySelector('.gameBase');
-const gameBoard = document.querySelector('.gameBoard');
+const background = document.querySelector('.background');
 const victims = ['bird',  'mice', 'rabbit', 'butterfly', 'dog'];
 const pointAudio = document.querySelectorAll('audio')[0];
 const dieAudio = document.querySelectorAll('audio')[1];
@@ -21,9 +21,28 @@ let i = 0;
 
 
 start.addEventListener('click', startGame);
+console.log(start);
+console.log(gameOver);
+console.log(pontos);
+console.log(gameBase);
+console.log(background);
+console.log(victims);
+console.log(pointAudio);
+console.log(dieAudio);
+console.log(catSetting);
+console.log(catPosition);
+console.log(pontuacao);
+console.log(backgroundTimer);
+console.log(monitorTimer);
+console.log(downTimer);
+console.log(timer);
+
+function updatePoints() {
+    pontos.innerHTML = pontuacao
+  }
 
 function toggleGameBase() {
-    gameBase.classList.toggle("baseMov")
+    gameBase.classList.toggle("baseMove")
   }
 function startGame() {
     gameBoard.addEventListener('click', jump)
@@ -38,14 +57,19 @@ function startGame() {
   }
 function handleGame () {
     game = setInterval(() => {
+        clearInterval(monitorTimer)
+        cleanBoard()
+        createVictim()
+        gameBoard.appendChild(victimElement)
       const catTop = parseInt(window.getComputedStyle(cat).getPropertyValue('top'))
-      if (cat ==false) {
+    //   if (cat ==false) {
 
-        dieAudio.play()
-      }
-    }, 10)
+    //     dieAudio.play()
+    //   }
+    }, 50)
   }
-  function createVictim() {
+  
+function createVictim() {
     victims.forEach(victim => {
         let victimElement = document.createElement('div')
         victimElement.classList.add(victim);
@@ -53,7 +77,6 @@ function handleGame () {
         victimElement.style.backgroundImage = `url(${imgSrc})`;
         gameBase.appendChild(victimElement);
     });
-    
   }
 
 function jump() {
@@ -66,7 +89,7 @@ function jump() {
       novaPosicao = board.height - catSetting.height / 2
     }
     // Atualiza a posição do personagem
-    cat.style.bottom = novaPosicao + '%'
+    cat.style.bottom = novaPosicao + 'vw'
   
     // Atualiza a posição atual
     posicaoAtual = novaPosicao
@@ -81,29 +104,52 @@ function downMovement() {
       // Atualiza a posição atual
       posicaoAtual = novaPosicao;
       // Atualiza a posição do personagem
-      cat.style.bottom = novaPosicao + "%";
+      cat.style.bottom = novaPosicao + "vw";
     }, 50)
   }
 function checkCollision() {
-  
-    
+    const catPosition = cat.getBoundingClientRect();
+    const victims = document.querySelectorAll('.victim');
+    victims.forEach(victim => {
+      const victimPosition = victim.getBoundingClientRect();
+    if(victim[i] !== victim[4]) { 
+      if (
+        catPosition.left < victimPosition.left + victimPosition.width &&
+        catPosition.left + catPosition.width > victimPosition.left &&
+        catPosition.top < victimPosition.top + victimPosition.height &&
+        catPosition.top + catPosition.height > victimPosition.top
+      ) {
+        pointAudio.play()
+        victim.remove()
+        pontuacao++
+        updatePoints()
+      }
+    } else {
+        if (
+            catPosition.left < victimPosition.left + victimPosition.width &&
+            catPosition.left + catPosition.width > victimPosition.left &&
+            catPosition.top < victimPosition.top + victimPosition.height &&
+            catPosition.top + catPosition.height > victimPosition.top
+        ) {
+            dieAudio.play()
+            clearInterval(game)
+            clearInterval(backgroundTimer)
+            clearInterval(monitorTimer)
+            clearInterval(downTimer)
+            clearInterval(timer)
+            gameOver.style.display = 'block'
+            start.style.display = 'block'
+            toggleGameBase()
+            gameBoard.removeEventListener('click', jump)
+        }
+    }
+    })
   }
   
+
+  function cleanBoard() {
+    if (gameBoard.querySelectorAll('.victim') !== null) {
+      gameBoard.querySelector('.victim').remove()
+    }
+  }
   setInterval(checkCollision, 10);
-
-
-  function endGame() {
-    clearInterval(downTimer)
-    clearInterval(backgroundTimer);
-    start.removeEventListener('click', startGame)
-    toggleGameBase()
-    clearInterval(timer)
-    gameBoard.removeEventListener('click', jump)
-    gameOver.style.display = "block"
-    setTimeout(() => {
-      start.addEventListener('click', startGame);
-      gameOver.style.display = "none"
-      start.style.display = 'block'
-    }, 3000)
-  
-  }
