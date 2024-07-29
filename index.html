@@ -1,28 +1,42 @@
-<!DOCTYPE >
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Missy Caçadora</title>
-    <link rel="stylesheet" href="style.css">
-	
-    </head>
-	<body>
-		<audio src="./assets/audio/point.wav"></audio>
-		<audio src="./assets/audio/die.wav"></audio>
-		<div class="start"></div>
-		<div class="gameOver" id="gameOver">
-			<h1>Game Over</h1>
-			</div>
-		<div class="gameBoard" id="gameBoard">
-			<div class="missy" id="missy"></div>
-			<div class="victim" id="victim"></div>
-			<h1 class="pontos">0</h1>
-			<img src="./assets/img/cat.png" class="cat" alt="gameBase">	
-			<div class="cat"></div>
-		</div>	
-		
-		<script src="script.js">
-		</script>
-	</body>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Missy Caçadora</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<!-- Elementos de Áudio -->
+	<audio src="./assets/audio/point.wav"></audio>
+	<audio src="./assets/audio/die.wav"></audio>
+
+	<!-- Botão de Início -->
+	<div class="start">Start</div>
+
+	<!-- Tela de Game Over -->
+	<div class="gameOver" id="gameOver" style="display: none;">
+		<h1>Game Over</h1>
+	</div>
+
+	<!-- Área de Jogo -->
+	<div class="gameBoard" id="gameBoard">
+		<!-- Elemento de Pontuação -->
+		<h1 class="pontos">0</h1>
+
+		<!-- Imagem do Gato -->
+		<img src="./assets/img/cat.png" class="cat" alt="Cat">
+
+		<!-- Elemento do Gato -->
+		<div class="cat" id="missy"></div>
+
+		<!-- Elemento das Vítimas -->
+	</div>
+
+	<!-- Inclusão do Script -->
+	<script src="script.js"></script>
+</body>
+
 </html>
