@@ -60,8 +60,8 @@ function createVictim() {
 	setInterval(moveVictims, victimInterval);
 }
 function moveVictims(victim) {
-	// Pega a posição atual do elemento
-	let currentRight = parseFloat(window.getComputedStyle(victim).getPropertyValue('right'));
+/* 	// Pega a posição atual do elemento
+	let currentRight = parseFloat(victim.style.right);
 
 	// Atualiza a posição horizontal movendo para a esquerda
 	victim.style.right = (currentRight + victimSpeed) + 'px';
@@ -69,7 +69,7 @@ function moveVictims(victim) {
 	// Verifica se a vítima saiu do quadro e remove-a se necessário
 	if (currentRight >= gameBoard.clientWidth) {
 		victim.remove(); // Remove o elemento da DOM
-	}
+	} */
 }
 function jump() {
 	clearInterval(downTimer);
