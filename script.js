@@ -33,14 +33,13 @@ function startGame() {
 	console.log('Iniciando o jogo');
 	gameBoard.addEventListener('click', jump);
 	pontuacao = 0;
-	cleanBoard();
 	toggleCat();
 	handleGame();
 	updatePoints();
 	start.style.display = 'none';
 	gameOver.style.display = 'none';
 }
-
+startGame();
 function handleGame() {
 	setInterval(() => {
 		cleanBoard();
@@ -60,11 +59,12 @@ function createVictim() {
 	setInterval(moveVictims, victimInterval);
 }
 function moveVictims(victim) {
-/* 	// Pega a posição atual do elemento
-	let currentRight = parseFloat(victim.style.right);
+	/* // Pega a posição atual do elemento
+	let currentRight = parseFloat(window.getBoundingClientRect(victim));
 
 	// Atualiza a posição horizontal movendo para a esquerda
-	victim.style.right = (currentRight + victimSpeed) + 'px';
+	victim.style.right = (currentRight + victimSpeed) + 'vw';
+  console.log(currentRight);
 
 	// Verifica se a vítima saiu do quadro e remove-a se necessário
 	if (currentRight >= gameBoard.clientWidth) {
