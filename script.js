@@ -1,155 +1,157 @@
-const cat = document.querySelector('.cat');
 const start = document.querySelector('.start');
 const gameOver = document.querySelector('.gameOver');
 const pontos = document.querySelector('.pontos');
-const gameBase = document.querySelector('.gameBase');
+const Cat = document.querySelector('.cat');
 const background = document.querySelector('.background');
-const victims = ['bird',  'mice', 'rabbit', 'butterfly', 'dog'];
+const victims = ['bird', 'mice', 'rabbit', 'butterfly', 'dog'];
 const pointAudio = document.querySelectorAll('audio')[0];
 const dieAudio = document.querySelectorAll('audio')[1];
+const gameBoard = document.querySelector('.gameBoard');
 
-let catSetting = cat.getBoundingClientRect();
-let catPosition = cat.getBoundingClientRect().bottom;
+let catSetting = Cat.getBoundingClientRect();
 let pontuacao = 0;
 let backgroundTimer = null;
 let monitorTimer = null;
 let downTimer = null;
-let timer = null;
-let i = 0;
+let game = null;
+let posicaoAtual = 0;
+const victimSpeed = 2; // Velocidade de movimento das vítimas (em pixels por intervalo)
+const victimInterval = 20; // Intervalo de tempo para atualização do movimento (em milissegundos)
 
-
-
-
+// Adicionando evento de clique para iniciar o jogo
 start.addEventListener('click', startGame);
-console.log(start);
-console.log(gameOver);
-console.log(pontos);
-console.log(gameBase);
-console.log(background);
-console.log(victims);
-console.log(pointAudio);
-console.log(dieAudio);
-console.log(catSetting);
-console.log(catPosition);
-console.log(pontuacao);
-console.log(backgroundTimer);
-console.log(monitorTimer);
-console.log(downTimer);
-console.log(timer);
 
 function updatePoints() {
-    pontos.innerHTML = pontuacao
-  }
+	pontos.innerHTML = pontuacao;
+}
 
-function toggleGameBase() {
-    gameBase.classList.toggle("baseMove")
-  }
+function toggleCat() {
+	Cat.classList.toggle("baseMove");
+}
+
 function startGame() {
-    gameBoard.addEventListener('click', jump)
-    pontuacao = 0;
-    cleanBoard()
-    toggleGameBase()
-    updatePoints()
-    handleBackground()
-    handleGame()
-    start.style.display = 'none'
-  
-  }
-function handleGame () {
-    game = setInterval(() => {
-        clearInterval(monitorTimer)
-        cleanBoard()
-        createVictim()
-        gameBoard.appendChild(victimElement)
-      const catTop = parseInt(window.getComputedStyle(cat).getPropertyValue('top'))
-    //   if (cat ==false) {
+	console.log('Iniciando o jogo');
+	gameBoard.addEventListener('click', jump);
+	pontuacao = 0;
+	cleanBoard();
+	toggleCat();
+	handleGame();
+	updatePoints();
+	start.style.display = 'none';
+	gameOver.style.display = 'none';
+}
 
-    //     dieAudio.play()
-    //   }
-    }, 50)
-  }
-  
+function handleGame() {
+	setInterval(() => {
+		cleanBoard();
+		createVictim();
+		checkCollision();
+	}, 5000);
+}
+
 function createVictim() {
-    victims.forEach(victim => {
-        let victimElement = document.createElement('div')
-        victimElement.classList.add(victim);
-        const imgSrc = `assets/img/${victim}.png`;
-        victimElement.style.backgroundImage = `url(${imgSrc})`;
-        gameBase.appendChild(victimElement);
-    });
-  }
+	const victimType = victims[Math.floor(Math.random() * victims.length)];
+	let victimElement = document.createElement('img');
+	victimElement.src = `./assets/img/${victimType}.png`;
+	victimElement.classList.add(victimType);
+	victimElement.bottom = '72px';
+	gameBoard.appendChild(victimElement);
 
+	setInterval(moveVictims, victimInterval);
+}
+function moveVictims(victim) {
+	// Pega a posição atual do elemento
+	let currentRight = parseFloat(window.getComputedStyle(victim).getPropertyValue('right'));
+
+	// Atualiza a posição horizontal movendo para a esquerda
+	victim.style.right = (currentRight + victimSpeed) + 'px';
+
+	// Verifica se a vítima saiu do quadro e remove-a se necessário
+	if (currentRight >= gameBoard.clientWidth) {
+		victim.remove(); // Remove o elemento da DOM
+	}
+}
 function jump() {
-    clearInterval(downTimer)
-    const salto = 11 // Define a altura do salto
-  
-    // Calcula a nova posição com base na posição atual e no salto
-    let novaPosicao = posicaoAtual + salto
-    if (novaPosicao >= board.height) {
-      novaPosicao = board.height - catSetting.height / 2
-    }
-    // Atualiza a posição do personagem
-    cat.style.bottom = novaPosicao + 'vw'
-  
-    // Atualiza a posição atual
-    posicaoAtual = novaPosicao
-    downMovement()
-  }
-function downMovement() {
-    downTimer = setInterval(() => {
-      // Calcula a nova posição com base na posição atual na queda de 10px a cada 0.1s
-      let novaPosicao = parseFloat(posicaoAtual - 10);
-  
-      
-      // Atualiza a posição atual
-      posicaoAtual = novaPosicao;
-      // Atualiza a posição do personagem
-      cat.style.bottom = novaPosicao + "vw";
-    }, 50)
-  }
-function checkCollision() {
-    const catPosition = cat.getBoundingClientRect();
-    const victims = document.querySelectorAll('.victim');
-    victims.forEach(victim => {
-      const victimPosition = victim.getBoundingClientRect();
-    if(victim[i] !== victim[4]) { 
-      if (
-        catPosition.left < victimPosition.left + victimPosition.width &&
-        catPosition.left + catPosition.width > victimPosition.left &&
-        catPosition.top < victimPosition.top + victimPosition.height &&
-        catPosition.top + catPosition.height > victimPosition.top
-      ) {
-        pointAudio.play()
-        victim.remove()
-        pontuacao++
-        updatePoints()
-      }
-    } else {
-        if (
-            catPosition.left < victimPosition.left + victimPosition.width &&
-            catPosition.left + catPosition.width > victimPosition.left &&
-            catPosition.top < victimPosition.top + victimPosition.height &&
-            catPosition.top + catPosition.height > victimPosition.top
-        ) {
-            dieAudio.play()
-            clearInterval(game)
-            clearInterval(backgroundTimer)
-            clearInterval(monitorTimer)
-            clearInterval(downTimer)
-            clearInterval(timer)
-            gameOver.style.display = 'block'
-            start.style.display = 'block'
-            toggleGameBase()
-            gameBoard.removeEventListener('click', jump)
-        }
-    }
-    })
-  }
-  
+	clearInterval(downTimer);
+	const salto = 150; // Define a altura do salto
 
-  function cleanBoard() {
-    if (gameBoard.querySelectorAll('.victim') !== null) {
-      gameBoard.querySelector('.victim').remove()
-    }
-  }
-  setInterval(checkCollision, 10);
+	// Calcula a nova posição com base na posição atual e no salto
+	let novaPosicao = posicaoAtual + salto;
+	const maxHeight = gameBoard.clientHeight - Cat.clientHeight;
+
+	if (novaPosicao > maxHeight) {
+		novaPosicao = maxHeight;
+	}
+
+	// Atualiza a posição do personagem
+	Cat.style.bottom = novaPosicao + 'px';
+
+	// Atualiza a posição atual
+	posicaoAtual = novaPosicao;
+
+	// Chama o movimento de descida após um tempo
+	setTimeout(() => {
+		downMovement();
+	}, 400);
+}
+
+function downMovement() {
+	downTimer = setInterval(() => {
+		let novaPosicao = posicaoAtual - 10;
+
+		// Se atingir o fundo do tabuleiro, para o movimento
+		if (novaPosicao <= 72) {
+			novaPosicao = 72;
+			clearInterval(downTimer);
+		}
+
+		// Atualiza a posição atual
+		posicaoAtual = novaPosicao;
+		// Atualiza a posição do personagem
+		Cat.style.bottom = novaPosicao + "px";
+	}, 400);
+}
+
+function checkCollision() {
+	const catPosition = Cat.getBoundingClientRect();
+	const victimElements = document.querySelectorAll('.victim');
+
+	victimElements.forEach(victim => {
+		const victimPosition = victim.getBoundingClientRect();
+		const isDog = victim.classList.contains('dog');
+
+		if (
+			catPosition.left < victimPosition.left + victimPosition.width &&
+			catPosition.left + catPosition.width > victimPosition.left &&
+			catPosition.top < victimPosition.top + victimPosition.height &&
+			catPosition.top + catPosition.height > victimPosition.top
+		) {
+			if (isDog) {
+				dieAudio.play();
+				endGame();
+			} else {
+				pointAudio.play();
+				victim.remove();
+				pontuacao++;
+				updatePoints();
+			}
+		}
+	});
+}
+
+function endGame() {
+	clearInterval(game);
+	clearInterval(backgroundTimer);
+	clearInterval(monitorTimer);
+	clearInterval(downTimer);
+	gameOver.style.display = 'block';
+	start.style.display = 'block';
+	toggleCat();
+	gameBoard.removeEventListener('click', jump);
+}
+
+function cleanBoard() {
+	victims.forEach(victim => {
+		gameBoard.querySelectorAll(`.${victim}`).forEach(victim => victim.remove());
+	});
+}
