@@ -29,6 +29,7 @@ audio {
   border: 2px solid black;
   margin: 0 auto;
   overflow: hidden;
+
 }
 
 .cat {
@@ -36,6 +37,8 @@ audio {
   bottom: 75px;
   width: 60px;
   z-index: 2;
+  background-repeat: repeat-x;
+  animation: moveVictim 10s linear infinite;
 }
 
 .bird {
@@ -44,6 +47,8 @@ audio {
   width: 60px;
   margin-left: 500px;
   z-index: 2;
+  background-repeat: repeat-x;
+  animation: moveVictim 10s linear infinite;
 }
 .dog {
   position: absolute;
@@ -51,12 +56,16 @@ audio {
   width: 60px;
   margin-left: 500px;
   z-index: 2;
+  background-repeat: repeat-x;
+  animation: moveVictim 10s linear infinite;
 }
 .rabbit {
   position: absolute;
   bottom: 75px;
   width: 60px;
   z-index: 2;
+  background-repeat: repeat-x;
+  animation: moveVictim 10s linear infinite;
   margin-left: 500px;
 }
 .mice {
@@ -64,6 +73,8 @@ audio {
   bottom: 75px;
   width: 60px;
   z-index: 2;
+  background-repeat: repeat-x;
+  animation: moveVictim 10s linear infinite;
   margin-left: 500px;
 }
 .butterfly {
@@ -72,6 +83,8 @@ audio {
   width: 60px;
   margin-left: 500px;
   z-index: 2;
+  background-repeat: repeat-x;
+  animation: moveVictim 10s linear infinite;
 }
 
 .baseMove {
@@ -97,18 +110,13 @@ audio {
     left: auto;
   }
 }
-@keyframes mover_animation {
-  0% {
-    left: 1vw;
-  }
-
-  50% {
-    left: 85vw;
-  }
-
-  100% {
-    left: 1vw;
-  }
+@keyframes moveVictim {
+from {
+  background-position: 100% 0;
+}
+to {
+  background-position: -100% 0;
+}
 }
 
 @media screen and (max-width: 640px) {
